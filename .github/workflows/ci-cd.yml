@@ -225,12 +225,6 @@ jobs:
   # =========================================================================
   # Stage 4 - AI Review
   # =========================================================================
-  # =========================================================================
-  # Stage 4 - AI Review
-  # =========================================================================
-    # =========================================================================
-  # Stage 4 - AI Review
-  # =========================================================================
   ai-review:
     name: "Stage 4 - AI Review"
     needs: [build, test, security-scan]
@@ -252,7 +246,6 @@ jobs:
           git diff --unified=0 origin/main...HEAD > diff.patch || echo "diff.patch created"
           echo "diff_path=diff.patch" >> "$GITHUB_OUTPUT"
           echo "lines=$(wc -l < diff.patch)" >> "$GITHUB_OUTPUT"
-
       - name: AI code review (Claude)
         if: env.ANTHROPIC_API_KEY != ''
         env:
@@ -271,7 +264,6 @@ jobs:
           claude_args: |
             --model claude-3-5-sonnet-latest
             --max-turns 8
-
       - name: Hardcoded decision check
         if: always()
         run: |
