@@ -170,10 +170,12 @@
                                         </limit>
                                     </limits>
                                     <excludes>
-                                        <exclude>com/example/userapi/UserApiApplication.class</exclude>
+                                        <exclude>com/example/userapi/UserApiApplication*</exclude>
                                         <exclude>com/example/userapi/config/*</exclude>
                                         <exclude>com/example/userapi/dto/*</exclude>
                                         <exclude>com/example/userapi/entity/*</exclude>
+                                        <exclude>com/example/userapi/exception/UserServiceException</exclude>
+                                        <exclude>com/example/userapi/exception/ErrorResponse</exclude>
                                     </excludes>
                                 </rule>
                             </rules>
