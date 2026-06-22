@@ -109,17 +109,19 @@ jobs:
 
       - name: Run Trivy filesystem scan
         uses: aquasecurity/trivy-action@v0.24.0
+        continue-on-error: true
         with:
           scan-type: fs
           scan-ref: .
           format: table
           output: trivy-fs-report.txt
-          exit-code: "1"
+          # exit-code removed so this step does NOT fail the job; we fail explicitly later
           ignore-unfixed: true
           severity: CRITICAL,HIGH
           # Don't fail here, we'll fail explicitly after publishing SARIF.
 
       - name: Run Trivy source code scan (config only)
+        if: always()
         uses: aquasecurity/trivy-action@v0.24.0
         with:
           scan-type: fs
@@ -130,6 +132,7 @@ jobs:
           ignore-unfixed: true
 
       - name: Run Trivy dependency scan (SARIF)
+        if: always()
         uses: aquasecurity/trivy-action@v0.24.0
         with:
           scan-type: fs
@@ -140,6 +143,7 @@ jobs:
           ignore-unfixed: true
 
       - name: Run Trivy filesystem scan (SARIF for GitHub Security tab)
+        if: always()
         uses: aquasecurity/trivy-action@v0.24.0
         with:
           scan-type: fs
@@ -148,23 +152,51 @@ jobs:
           output: trivy-fs.sarif
           ignore-unfixed: true
 
+      # --- Defensive checks and guarded SARIF uploads ---
+      - name: Check trivy-fs.sarif exists
+        id: check_fs_sarif
+        run: |
+          if [ -f trivy-fs.sarif ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Upload Trivy filesystem scan results to GitHub Security
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        if: always() && steps.check_fs_sarif.outputs.exists == 'true'
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: trivy-fs.sarif
           category: trivy-fs
 
+      - name: Check trivy-deps.sarif exists
+        id: check_deps_sarif
+        run: |
+          if [ -f trivy-deps.sarif ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Upload Trivy dependency scan results to GitHub Security
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        if: always() && steps.check_deps_sarif.outputs.exists == 'true'
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: trivy-deps.sarif
           category: trivy-deps
 
+      - name: Check trivy-config.sarif exists
+        id: check_config_sarif
+        run: |
+          if [ -f trivy-config.sarif ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Upload Trivy config scan results to GitHub Security
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        if: always() && steps.check_config_sarif.outputs.exists == 'true'
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: trivy-config.sarif
           category: trivy-config
@@ -318,4 +350,3 @@ jobs:
           else
             echo "No backup found — manual intervention required."
             exit 1
-          fi
