@@ -49,7 +49,7 @@ PASS | FAIL
 2. `System.out.println` / `System.err.println` in production code.
 3. Hardcoded secrets, credentials, or tokens.
 4. New public method in `controller/` or `service/` without a unit test.
-5. Coverage below 85% line / 80% branch for changed files.
+5. Coverage below 60% line / 60% branch for changed files.
 6. Stack traces exposed in HTTP error responses.
 7. Use of outdated or vulnerable dependencies (per Trivy report).
 

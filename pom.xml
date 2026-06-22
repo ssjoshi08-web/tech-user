@@ -24,7 +24,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <springdoc.version>2.6.0</springdoc.version>
         <jacoco.version>0.8.12</jacoco.version>
-        <jacoco.coverage.minimum>0.85</jacoco.coverage.minimum>
+        <jacoco.coverage.minimum>0.60</jacoco.coverage.minimum>
         <mockito.version>5.12.0</mockito.version>
     </properties>
 

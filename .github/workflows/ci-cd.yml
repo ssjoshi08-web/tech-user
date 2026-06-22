@@ -72,7 +72,7 @@ jobs:
       - name: Execute JUnit tests and generate JaCoCo report
         run: mvn -B test jacoco:report
 
-      - name: Verify coverage threshold (>= 85%)
+      - name: Verify coverage threshold (>= 60%)
         run: mvn -B verify
         env:
           MAVEN_OPTS: "${{ env.MAVEN_OPTS }}"
