@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,10 +18,10 @@ import java.util.Objects;
 /**
  * Default implementation of {@link UserService}.
  *
- * <p>Handles conversion between persistence entities and DTOs, applies
- * read-only transactions, and converts lower-level persistence exceptions
- * into a domain-specific exception that the {@code GlobalExceptionHandler}
- * can translate into a meaningful HTTP response.</p>
+ * <p>Handles conversion between domain entities and DTOs, and converts
+ * lower-level repository failures into a domain-specific exception that
+ * the {@code GlobalExceptionHandler} can translate into a meaningful
+ * HTTP response.</p>
  */
 @Service
 @Slf4j
@@ -39,7 +38,6 @@ public class UserServiceImpl implements UserService {
      * @throws UserServiceException if the underlying repository call fails
      */
     @Override
-    @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         LOGGER.info("Fetching all users from the repository");
         try {
@@ -64,7 +62,7 @@ public class UserServiceImpl implements UserService {
     /**
      * Maps a {@link User} entity to a {@link UserDto}.
      *
-     * @param user the persistence entity; must not be {@code null}
+     * @param user the domain entity; must not be {@code null}
      * @return the corresponding DTO
      */
     private UserDto toDto(final User user) {

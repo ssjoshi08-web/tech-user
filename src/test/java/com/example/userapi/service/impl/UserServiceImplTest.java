@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataAccessResourceFailureException;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -89,8 +88,7 @@ class UserServiceImplTest {
     @DisplayName("getAllUsers_repositoryException: should wrap repository failures in UserServiceException")
     void getAllUsers_repositoryException() {
         // Arrange
-        final DataAccessResourceFailureException cause =
-                new DataAccessResourceFailureException("Database unavailable");
+        final RuntimeException cause = new RuntimeException("Repository failure");
         when(userRepository.findAll()).thenThrow(cause);
 
         // Act + Assert

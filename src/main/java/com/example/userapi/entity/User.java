@@ -1,11 +1,6 @@
 package com.example.userapi.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,33 +12,30 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * JPA entity representing a user in the system.
+ * Domain entity representing a user in the system.
  *
- * <p>This entity maps to the {@code users} table in the database and is
- * used as the persistence model. The DTO layer is responsible for shaping
- * the data exposed via the REST API.</p>
+ * <p>This class is intentionally a plain POJO — the application does not
+ * require a database. It is kept in the {@code entity} package to preserve
+ * the layered architecture (entity → repository → service → controller).</p>
  */
-@Entity
-@Table(name = "users")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "Domain entity representing a user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
+    @Schema(description = "Unique identifier of the user", example = "1")
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 100)
+    @Schema(description = "Full name of the user", example = "Sachin")
     private String name;
 
-    @Column(name = "email", nullable = false, length = 150, unique = true)
+    @Schema(description = "Email address of the user", example = "sachin@example.com")
     private String email;
 
     /**
