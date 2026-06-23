@@ -296,7 +296,7 @@ jobs:
   deploy:
     name: "Stage 5 - Deploy"
     needs: [build, test, security-scan]
-    runs-on: [self-hosted, linux, ubuntu]
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - name: Pull latest code
