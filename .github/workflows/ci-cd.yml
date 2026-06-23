@@ -252,6 +252,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: read
+      issues: write
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
