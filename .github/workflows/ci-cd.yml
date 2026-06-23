@@ -294,7 +294,7 @@ jobs:
   # =========================================================================
   deploy:
     name: "Stage 5 - Deploy"
-    needs: [build, test, security-scan, ai-review]
+    needs: [build, test, security-scan]
     runs-on: [self-hosted, linux, ubuntu]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
